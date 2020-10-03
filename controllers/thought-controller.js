@@ -2,12 +2,12 @@ const { Thought, User } = require('../models');
 
 const thoughtController = {
   // add thought to User
-  addComment({ params, body }, res) {
+  addThought({ params, body }, res) {
     console.log(params);
     Thought.create(body)
       .then(({ _id }) => {
         return User.findOneAndUpdate(
-          { _id: params.userId },
+          { _id: body.userId },
           { $push: { comments: _id } },
           { new: true }
         );
@@ -23,8 +23,8 @@ const thoughtController = {
       .catch(err => res.json(err));
   },
 
-  // add reply to thought
-  addReply({ params, body }, res) {
+  // add reaction to thought
+  addReaction({ params, body }, res) {
     Thought.findOneAndUpdate(
       { _id: params.commentId },
       { $push: { replies: body } },
@@ -41,14 +41,14 @@ const thoughtController = {
   },
 
   // remove thought
-  removeComment({ params }, res) {
+  removeThought({ params }, res) {
     Thought.findOneAndDelete({ _id: params.commentId })
       .then(deletedComment => {
         if (!deletedComment) {
           return res.status(404).json({ message: 'No thought with this id!' });
         }
         return User.findOneAndUpdate(
-          { _id: params.pizzaId },
+          { _id: params.userId },
           { $pull: { comments: params.commentId } },
           { new: true }
         );
@@ -63,7 +63,7 @@ const thoughtController = {
       .catch(err => res.json(err));
   },
   // remove reply
-  removeReply({ params }, res) {
+  removeReaction({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.commentId },
       { $pull: { replies: { replyId: params.replyId } } },
