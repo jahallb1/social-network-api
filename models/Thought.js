@@ -24,7 +24,7 @@ const ThoughtSchema = new Schema ({
     },
     {
         toJSON:{ getters: true},
-        id: false
+        //id: false
 })
 
 ThoughtSchema.virtual('reactionCount').get(function() {

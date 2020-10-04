@@ -7,11 +7,11 @@ const {
 } = require('../../controllers/thought-controller');
 
 // /api/thought/<userId>
-router.route('/:userId').post(addThought);
+router.route('/:id').post(addThought);
 
 // /api/thought/<userId>/<thoughtId>
 router
-  .route('/:userId/:thoughttId')
+  .route('/:id/:thoughttId')
   .put(addReaction)
   .delete(removeThought);
 

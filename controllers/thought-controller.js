@@ -8,7 +8,7 @@ const thoughtController = {
       .then(({ _id }) => {
         return User.findOneAndUpdate(
           { _id: body.userId },
-          { $push: { comments: _id } },
+          { $push: { thought: _id } },
           { new: true }
         );
       })
@@ -42,7 +42,7 @@ const thoughtController = {
 
   // remove thought
   removeThought({ params }, res) {
-    Thought.findOneAndDelete({ _id: params.commentId })
+    Thought.findOneAndDelete({ _id: params.thoughtId })
       .then(deletedComment => {
         if (!deletedComment) {
           return res.status(404).json({ message: 'No thought with this id!' });
